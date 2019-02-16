@@ -1,0 +1,25 @@
+{#{% load static %}#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+</head>
+<body>
+<div id="container">
+    <div id="wrap">
+        {% include 'head.html' %}
+        <div class="outer">
+            <div id="main">
+                {% block main %}
+                {% endblock main %}
+            </div>
+            {% include 'slider.html' %}
+        </div>
+        {% include 'footer.html' %}
+    </div>
+</div>
+
+</body>
+</html>

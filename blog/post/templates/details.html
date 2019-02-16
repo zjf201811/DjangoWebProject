@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load custommark %}
+{% block title %}{{ post.title }}{% endblock title %}
+{% block main %}
+    <article class="article article-type-post">
+        <div class="article-meta">
+          <a class="article-date">
+            <time>{{ post.created|date }}</time>
+          </a>
+          <div class="article-category">
+            <a class="article-category-link" href="#" target="_blank">{{ post.category }}</a>
+          </div>
+        </div>
+        <div class="article-inner">
+            <header class="article-header">
+                <h1 itemprop="name">
+                    <a class="article-title">{{ post.title }}</a>
+                </h1>
+            </header>
+    <div class="article-entry" itemprop="articleBody">
+        <h2>前言</h2>
+        <hr>
+    {{ post.content|mark|safe }}
+    </div>
+    <footer class="article-footer">
+      <a data-url="存放文章的url" class="article-share-link">分享</a>
+    </footer>
+  </div>
+    </article>
+{% endblock main %}

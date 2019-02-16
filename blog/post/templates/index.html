@@ -1,0 +1,60 @@
+{%  extends 'base.html' %}
+{% load custommark %}
+{% block title %}不想跟琪哥玩三国杀{% endblock title %}
+{% block main %}
+  {% for post in page.object_list %}
+ <article class="article article-type-post">
+            <div class="article-meta">
+                <a class="article-date">
+                    <time>{{ post.created|date }}</time>
+                </a>
+                <div class="article-category">
+                    <a class="article-category-link" href="#" target="_blank">{{ post.category|lower }}</a>
+                </div>
+            </div>
+            <div class="article-inner">
+                <header class="article-header">
+                    <h1 itemprop="name">
+                        <a class="article-title" href="#" target="_blank">{{ post.title }}</a>
+                    </h1>
+                </header>
+                <div class="article-entry" itemprop="articleBody">
+                    <h2>前言</h2>
+                    <hr>
+                    <!--内容-->
+                    {{ post.desc }}
+{#                    {{ post.desc|mark|safe }}#}
+                    <p class="article-more-link">
+                        <a href="/post/details/{{ post.id }}" target="_blank">阅读全文</a>
+                    </p>
+                </div>
+                <footer class="article-footer">
+                    <a data-url="存放文章的url" class="article-share-link">分享</a>
+                </footer>
+            </div>
+        </article>
+  {% endfor %}
+
+
+
+
+    <nav id="page-nav">
+            {% if page.has_previous %}
+             <a class="extend prev" rel="next" href="/page/{{ page.previous_page_number }}">« Prev</a>
+            {% endif %}
+              {% for p in page_range %}
+              {% if p == page.number %}
+              <span class="page-number current">{{ p }}</span>
+              {% else  %}
+                  <a class="page-number" href="/page/{{ p }}">{{ p }}</a>
+              {% endif %}
+
+              {% endfor %}
+
+
+            {% if page.has_next %}
+            <a class="extend next" rel="next" href="/page/{{ page.next_page_number }}">Next »</a>
+            {% endif %}
+
+    </nav>
+{% endblock main %}
