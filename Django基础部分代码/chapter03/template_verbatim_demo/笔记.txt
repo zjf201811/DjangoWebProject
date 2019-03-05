@@ -1,0 +1,9 @@
+# verbatim标签笔记：
+
+`verbatim`标签：默认在`DTL`模板中是会去解析那些特殊字符的。比如`{%`和`%}`以及`{{`等。如果你在某个代码片段中不想使用`DTL`的解析引擎。那么你可以把这个代码片段放在`verbatim`标签中。示例代码下：
+
+```python
+{% verbatim %}
+{{if dying}}Still alive.{{/if}}
+{% endverbatim %}
+```

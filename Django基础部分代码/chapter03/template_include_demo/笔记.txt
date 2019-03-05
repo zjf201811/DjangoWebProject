@@ -1,0 +1,7 @@
+# include笔记：
+
+1. 有些模版代码是重复的。因此可以单独抽取出来，以后哪里需要用到，就直接使用`include`进来就可以了。
+2. 如果想要在`include`子模版的时候，传递一些参数，那么可以使用`with xxx=xxx`的形式。示例代码如下：
+    ```python
+    {% include 'header.html' with username='zhiliao' %}
+    ```

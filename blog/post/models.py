@@ -42,8 +42,8 @@ class Post(models.Model):
             num = pagintor.num_pages
         page = pagintor.page(num)
 
-        pervious = 2
-        last = 2
+        pervious = 3
+        last = 3
         if num <= pervious:
             start = 1
             end = last + pervious + 1

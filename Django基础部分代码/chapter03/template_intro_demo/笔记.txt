@@ -1,0 +1,24 @@
+# 模版介绍笔记：
+
+在之前的章节中，视图函数只是直接返回文本，而在实际生产环境中其实很少这样用，因为实际的页面大多是带有样式的HTML代码，这可以让浏览器渲染出非常漂亮的页面。目前市面上有非常多的模板系统，其中最知名最好用的就是DTL和Jinja2。DTL是Django Template Language三个单词的缩写，也就是Django自带的模板语言。当然也可以配置Django支持Jinja2等其他模板引擎，但是作为Django内置的模板语言，和Django可以达到无缝衔接而不会产生一些不兼容的情况。因此建议大家学习好DTL。
+
+## DTL与普通的HTML文件的区别：
+DTL模板是一种带有特殊语法的HTML文件，这个HTML文件可以被Django编译，可以传递参数进去，实现数据动态化。在编译完成后，生成一个普通的HTML文件，然后发送给客户端。
+
+## 渲染模板：
+渲染模板有多种方式。这里讲下两种常用的方式。
+
+1. `render_to_string`：找到模板，然后将模板编译后渲染成Python的字符串格式。最后再通过HttpResponse类包装成一个HttpResponse对象返回回去。示例代码如下：
+```python
+from django.template.loader import render_to_string
+ from django.http import HttpResponse
+ def book_detail(request,book_id):
+     html = render_to_string("detail.html")
+     return HttpResponse(html)
+```
+2. 以上方式虽然已经很方便了。但是django还提供了一个更加简便的方式，直接将模板渲染成字符串和包装成HttpResponse对象一步到位完成。示例代码如下：
+```python
+ from django.shortcuts import render
+ def book_list(request):
+     return render(request,'list.html')
+```

@@ -1,0 +1,36 @@
+# 模版变量笔记：
+1. 在模版中使用变量，需要将变量放到`{{ 变量 }}`中。
+2. 如果想要访问对象的属性，那么可以通过`对象.属性名`来进行访问。
+    ```python
+    class Person(object):
+        def __init__(self,username):
+            self.username = username
+
+    context = {
+        'person': p
+    }
+    ```
+    以后想要访问`person`的`username`，那么就是通过`person.username`来访问。
+3. 如果想要访问一个字典的key对应的value，那么只能通过`字典.key`的方式进行访问，不能通过`中括号[]`的形式进行访问。
+    ```python
+    context = {
+        'person': {
+            'username':'zhiliao'
+        }
+    }
+    ```
+    那么以后在模版中访问`username`。就是以下代码`person.username`
+4. 因为在访问字典的`key`时候也是使用`点.`来访问，因此不能在字典中定义字典本身就有的属性名当作`key`，否则字典的那个属性将编程字典中的key了。
+    ```python
+    context = {
+        'person': {
+            'username':'zhiliao',
+            'keys':'abc'
+        }
+    }
+    ```
+    以上因为将`keys`作为`person`这个字典的`key`了。因此以后在模版中访问`person.keys`的时候，返回的不是这个字典的所有key，而是对应的值。
+5. 如果想要访问列表或者元组，那么也是通过`点.`的方式进行访问，不能通过`中括号[]`的形式进行访问。这一点和python中是不一样的。示例代码如下：
+    ```python
+    {{ persons.1 }}
+    ```

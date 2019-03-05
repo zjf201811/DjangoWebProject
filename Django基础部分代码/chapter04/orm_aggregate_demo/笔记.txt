@@ -1,0 +1,64 @@
+# 聚合函数笔记：
+
+1. 所有的聚合函数都是放在`django.db.models`下面。
+2. 聚合函数不能够单独的执行，需要放在一些可以执行聚合函数的方法下面中去执行。比如`aggregate`。示例代码如下：
+    ```python
+    result = Book.objects.aggregate(Avg("price"))
+    ```
+3. 聚合函数执行完成后，给这个聚合函数的值取个名字。取名字的规则，默认是`filed+__+聚合函数名字`形成的。比如以上代码形成的名字叫做`price__avg`。如果不想使用默认的名字，那么可以在使用聚合函数的时候传递关键字参数进去，参数的名字就是聚合函数执行完成的名字。实示例代码如下：
+    ```python
+    result = Book.objects.aggregate(avg=Avg("price"))
+    ```
+    以上传递了关键字参数`avg=Avg("price")`，那么以后`Avg`聚合函数执行完成的名字就叫做`avg`。
+4. `aggregate`：这个方法不会返回一个`QuerySet`对象，而是返回一个字典。这个字典中的key就是聚合函数的名字，值就是聚合函数执行后的结果。
+5. `aggregate`和`annotate`的相同和不同：
+    * 相同：这两个方法都可以执行聚合函数。
+    * 不同：
+        - `aggregate`返回的是一个字典，在这个字典中存储的是这个聚合函数执行的结果。而`annotate`返回的是一个`QuerySet`对象，并且会在查找的模型上添加一个聚合函数的属性。
+        - `aggregate`不会做分组，而`annotate`会使用`group by`子句进行分组，只有调用了`group by`子句，才能对每一条数据求聚合函数的值。
+
+6. `Count`：用来求某个数据的个数。比如要求所有图书的数量，那么可以使用以下代码：
+    ```python
+    result = Book.objects.aggregate(book_nums=Count("id"))
+    ```
+    并且`Count`可以传递`distinct=True`参数，用来剔除那些重复的值，只保留一个。比如要获取作者表中，不同邮箱的个数，那么这时候可以使用`distinct=True`。示例代码如下：
+    ```python
+    result = Author.objects.aggregate(email_nums=Count('email',distinct=True))
+    ```
+
+7. `Max`和`Min`：求指定字段的最大值和最小值。示例代码如下：
+    ```python
+    result = Author.objects.aggregate(max=Max("age"),min=Min("age"))
+    ```
+
+8. `Sum`：求某个字段值的总和。示例代码如下：
+    ```python
+    result = BookOrder.objects.aggregate(total=Sum('price'))
+    ```
+    `aggregate`和`annotate`方法可以在任何的`QuerySet`对象上调用。因此只要是返回了`QuerySet`对象，那么就可以进行链式调用。比如要获取2018年度的销售总额，那么可以先过滤年份，再求聚合函数。示例代码如下：
+    ```python
+    BookOrder.objects.filter(create_time__year=2018).aggregate(total=Sum('price'))
+    ```
+
+7. `F表达式`： 动态的获取某个字段上的值。并且这个F表达式，不会真正的去数据库中查询数据，他相当于只是起一个标识的作用。比如想要将原来每本图书的价格都在原来的基础之上增加10元，那么可以使用以下代码来实现：
+    ```python
+    from django.db.models import F
+    Book.objects.update(price=F("price")+10)
+    ```
+
+8. `Q表达式`：使用`Q`表达式包裹查询条件，可以在条件之间进行多种操作。与/或非等，从而实现一些复杂的查询操作。例子如下：
+    * 查找价格大于100，并且评分达到4.85以上的图书：
+        ```python
+        # 不使用Q表达式的
+        books = Book.objects.filter(price__gte=100,rating__gte=4.85)
+        # 使用Q表达式的
+        books = Book.objects.filter(Q(price__gte=100)&Q(rating__gte=4.85))
+        ```
+    * 查找价格低于100元，或者评分低于4分的图书：
+        ```python
+        books = Book.objects.filter(Q(price__gte=100)&Q(rating__gte=4.85))
+        ```
+    * 获取价格大于100，并且图书名字中不包含”传“字的图书：
+        ```python
+        books = Book.objects.filter(Q(price__gte=100)&~Q(name__icontains='传'))
+        ```

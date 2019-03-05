@@ -1,0 +1,26 @@
+# ORM模型的创建和映射：
+
+## 创建ORM模型：
+
+`ORM`模型一般都是放在`app`的`models.py`文件中。每个`app`都可以拥有自己的模型。并且如果这个模型想要映射到数据库中，那么这个`app`必须要放在`settings.py`的`INSTALLED_APP`中进行安装。以下是写一个简单的书籍`ORM`模型。示例代码如下：
+
+```python
+from django.db import models
+class Book(models.Model):
+name = models.CharField(max_length=20,null=False)
+author = models.CharField(max_length=20,null=False)
+pub_time = models.DateTimeField(default=datetime.now)
+price = models.FloatField(default=0)
+```
+
+以上便定义了一个模型。这个模型继承自`django.db.models.Model`，如果这个模型想要映射到数据库中，就必须继承自这个类。这个模型以后映射到数据库中，表名是模型名称的小写形式，为`book`。在这个表中，有四个字段，一个为`name`，这个字段是保存的是书的名称，是`varchar`类型，最长不能超过20个字符，并且不能为空。第二个字段是作者名字类型，同样也是`varchar`类型，长度不能超过20个。第三个是出版时间，数据类型是`datetime`类型，默认是保存这本书籍的时间。第五个是这本书的价格，是浮点类型。
+还有一个字段我们没有写，就是主键`id`，在`django`中，如果一个模型没有定义主键，那么将会自动生成一个自动增长的`int`类型的主键，并且这个主键的名字就叫做`id`。
+
+## 映射模型到数据库中：
+
+将`ORM`模型映射到数据库中，总结起来就是以下几步：
+1. 在`settings.py`中，配置好`DATABASES`，做好数据库相关的配置。
+2. 在`app`中的`models.py`中定义好模型，这个模型必须继承自`django.db.models`。
+3. 将这个`app`添加到`settings.py`的`INSTALLED_APP`中。
+4. 在命令行终端，进入到项目所在的路径，然后执行命令`python manage.py makemigrations`来生成迁移脚本文件。
+5. 同样在命令行中，执行命令`python manage.py migrate`来将迁移脚本文件映射到数据库中。

@@ -11,5 +11,5 @@ def post_details_view(request,post_id):
     try:
         post = Post.objects.get(id=post_id)
     except:
-        pass
+        return 0
     return render(request, 'details.html', {'post': post})

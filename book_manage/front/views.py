@@ -11,11 +11,11 @@ def index(request):
     cursor = get_corsor()
     cursor.execute('select * from books')
     books = cursor.fetchall()
-    return render(request,'index.html',context={'books':books})
+    return render(request, 'index.html', context={'books': books})
 
 
 def add_book(request):
-    if request.method=='GET':
+    if request.method == 'GET':
         return render(request, 'add_book.html')
     else:
         name = request.POST.get('name')

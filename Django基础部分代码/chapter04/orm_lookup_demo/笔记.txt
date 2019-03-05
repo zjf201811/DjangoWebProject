@@ -1,0 +1,96 @@
+# 查询条件笔记：
+
+1. exact：在底层会被翻译成`=`。
+
+2. iexact：在底层会被翻译成`LIKE`。
+    * LIKE和=：大部分情况下都是等价的，只有少数情况下是不等价的。
+    * exict和iexact：他们的区别其实就是LIKE和=的区别，因为exact会被翻译成=，而iexact会被翻译成LIKE。
+    * 因为`field__exact=xxx`其实等价于`filed=xxx`，因此我们直接使用`filed=xxx`就可以了，并且因为大部分情况`exact`和`iexact`又是等价的，因此我们以后直接使用`field=xxx`就可以了。
+
+3. QuerySet.query：`query`可以用来查看这个`ORM`查询语句最终被翻译成的`SQL`语句。但是`query`只能被用在`QuerySet`对象上，不能用在普通的`ORM模型`上。因此如果你的查询语句是通过`get`来获取数据的，那么就不能使用`query`，因为`get`返回的是满足条件的`ORM`模型，而不是`QuerySet`。如果你是通过`filter`等其他返回`QuerySet`的方法查询的，那么就可以使用`query`。
+
+4. contains：使用大小写敏感的判断，某个字符串是否在指定的字段中。这个判断条件会使用大小敏感，因此在被翻译成`SQL`语句的时候，会使用`like binary`，而`like binary`就是使用大小写敏感的。
+
+5. icontains：使用大小写不敏感的判断，某个字符串是否被包含在指定的字段中。这个查询语句在被翻译成`SQL`的时候，使用的是`like`，而`like`在`MySQL`层面就是不区分大小写的。
+6. contains和icontains：在被翻译成`SQL`的时候使用的是`%hello%`，就是只要整个字符串中出现了`hello`都能过够被找到，而`iexact`没有百分号，那么意味着只有完全相等的时候才会被匹配到。
+
+7. in：可以直接指定某个字段的是否在某个集合中。示例代码如下：
+    ```python
+    articles = Article.objects.filter(id__in=[1,2,3])
+    ```
+    也可以通过其他的表的字段来判断是否在某个集合中。示例代码如下：
+    ```python
+    categories = Category.objects.filter(article__id__in=[1,2,3])
+    ```
+    如果要判断相关联的表的字段，那么也是通过`__`来连接。并且在做关联查询的时候，不需要写`models_set`，直接使用`模型的名字的小写化`就可以了。比如通过分类去查找相应的文章，那么通过`article__id__in`就可以了，而不是写成`article_set__id__in`的形式。当然如果你不想使用默认的形式，可以在外键定义的时候传递`related_query_name`来指定反向查询的名字。示例代码如下：
+    ```python
+    class Category(models.Model):
+        name = models.CharField(max_length=100)
+
+        class Meta:
+            db_table = 'category'
+
+
+    class Article(models.Model):
+        title = models.CharField(max_length=200)
+        content = models.TextField()
+        cateogry = models.ForeignKey("Category",on_delete=models.CASCADE,null=True,related_query_name='articles')
+
+        class Meta:
+            db_table = 'article'
+    ```
+    因为在`cateogry`的`ForeignKey`中指定了`related_query_name`为`articles`，因此你不能再使用`article`来进行反向查询了。这时候就需要通过`articles__id__in`来进行反向查询。
+
+    反向查询是将模型名字小写化。比如`article__in`。可以通过`related_query_name`来指定自己的方式，而不使用默认的方式。
+    反向引用是将模型名字小写化，然后再加上`_set`，比如`article_set`，可以通过`related_name`来指定自己的方式，而不是用默认的方式。
+
+    并且，如果在做反向查询的时候，如果查询的字段就是模型的主键，那么可以省略掉这个字段，直接写成`article__in`就可以了，不需要这个`id`了。
+
+    `in`不仅仅可以指定列表/元组，还可以为`QuerySet`。比如要查询“文章标题中包含有hello的所有分类”，那么可以通过以下代码来实现：
+    ```python
+    articles = Article.objects.filter(title__icontains='hello')
+    categories = Category.objects.filter(articles__in=articles)
+    for cateogry in categories:
+        print(cateogry)
+    ```
+
+8. gt、gte、lt、lte：代表的是大于、大于等于、小于、小于等于的条件。示例代码如下：
+    ```python
+    articles = Article.objects.filter(id__lte=3)
+    ```
+
+9. startswith、istartswith、endswith、iendswith：表示以某个值开始，不区分大小写的以某个值开始、以某个值结束、不区分大小写的以某个值结束。示例代码如下：
+    ```python
+    articles = Article.objects.filter(title__endswith="hello")
+    ```
+
+10. 关于时间的查询条件：
+    * range：可以指定一个时间段。并且时间应该标记为`aware`时间，不然django会报警告。示例代码如下：
+        ```python
+        start_time = make_aware(datetime(year=2018,month=4,day=4,hour=17,minute=0,second=0))
+        end_time = make_aware(datetime(year=2018,month=4,day=4,hour=18,minute=0,second=0))
+        articles = Article.objects.filter(create_time__range=(start_time,end_time))
+        print(articles.query)
+        print(articles)
+        ```
+
+    * date：用年月日来进行过滤。如果想要使用这个过滤条件，那么前提必须要在`MySQL`中添加好那些时区文件。如何添加呢？参考教案。示例代码如下：
+        ```python
+        articles = Article.objects.filter(create_time__date=datetime(year=2018,month=4,day=4))
+        ```
+    * year/month/day：表示根据年/月/日进行查找。示例代码如下：
+        ```python
+        articles = Article.objects.filter(create_time__year__gte=2018)
+        ```
+    * week_day：根据星期来进行查找。1表示星期天，7表示星期六，2-6代表的是星期一到星期五。比如要查找星期三的所有文章，那么可以通过以下代码来实现：
+        ```python
+        articles = Article.objects.filter(create_time__week_day=4)
+        ```
+    * time：根据分时秒来进行查找。如果要具体到秒，一般比较难匹配到，可以使用区间的方式来进行查找。区间使用`range`条件。比如想要获取17时/10分/27-28秒之间的文章，那么可以通过以下代码来实现：
+        ```python
+        start_time = time(hour=17,minute=10,second=27)
+        end_time = time(hour=17,minute=10,second=28)
+        articles = Article.objects.filter(create_time__time__range=(start_time,end_time))
+        ```
+
+

@@ -1,0 +1,9 @@
+# reverse笔记：
+1. 如果在反转url的时候，需要添加参数，那么可以传递`kwargs`参数到`revers`函数中。示例代码如下：
+    ```python
+    detail_url = reverse('detail',kwargs={"article_id":1,'page':2})
+    ```
+2. 如果想要添加查询字符串的参数，则必须手动的进行拼接。示例代码如下：
+    ```python
+    login_url = reverse('login') + "?next=/"
+    ```

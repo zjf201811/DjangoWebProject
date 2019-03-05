@@ -1,0 +1,18 @@
+# URL映射的时候指定默认参数：
+使用path或者是re_path的后，在route中都可以包含参数，而有时候想指定默认的参数，这时候可以通过以下方式来完成。示例代码如下：
+```
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    path('blog/', views.page),
+    path('blog/page<int:num>/', views.page),
+]
+
+# View (in blog/views.py)
+def page(request, num=1):
+    # Output the appropriate page of blog entries, according to num.
+    ...
+```
+当在访问blog/的时候，因为没有传递num参数，所以会匹配到第一个url，这时候就执行view.page这个视图函数，而在page函数中，又有num=1这个默认参数。因此这时候就可以不用传递参数。而如果访问blog/1的时候，因为在传递参数的时候传递了num，因此会匹配到第二个url，这时候也会执行views.page，然后把传递进来的参数传给page函数中的num。

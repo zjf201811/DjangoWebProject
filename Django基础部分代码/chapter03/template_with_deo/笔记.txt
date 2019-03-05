@@ -1,0 +1,18 @@
+# with标签笔记：
+
+1. 在模板中，想要定义变量，可以通过`with`语句来实现。
+2. `with`语句有两种使用方式，第一种是`with xx=xxx`的形式，第二种是`with xxx as xxx`的形式。
+3. 定义的变量只能在with语句块中使用，在with语句块外面使用取不到这个变量。
+示例代码如下：
+```python
+    {% with zs=persons.0%}
+        <p>{{ zs }}</p>
+        <p>{{ zs }}</p>
+    {% endwith %}
+    下面这个因为超过了with语句块，因此不能使用
+    <p>{{ zs }}</p>
+
+    {% with persons.0 as zs %}
+        <p>{{ zs }}</p>
+    {% endwith %}
+```
