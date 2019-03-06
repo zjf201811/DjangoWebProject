@@ -50,6 +50,7 @@ class Post(models.Model):
         if num > pervious:
             start = num - pervious + 1
             end = num + last + 1
+
         if end > pagintor.num_pages:
             min = end - pagintor.num_pages
             end = pagintor.num_pages
