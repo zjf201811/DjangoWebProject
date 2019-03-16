@@ -30,3 +30,5 @@ class Student(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = "学员信息"
 
+
+
