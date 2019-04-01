@@ -1,9 +1,14 @@
 <hr/>
 <div class="comment">
+
     <form  class="form-group" action="/comment/" method="POST">
         {% csrf_token %}
+{#        {{ target }}#}
+{#        {{ title }}#}
         <input name="target" type="hidden" value="{{ target }}"/>
+        <input name="title" type="hidden" value="{{ title }}"/>
         {{ comment_form }}
+        {{ post.title }}
         <div id="captcha_section"></div>
 {#        <input id="verify" type="button" value="写好了!"/>#}
         <input id="submit" type="submit" value="写好了!"/>
@@ -11,6 +16,7 @@
 
     <!-- 评论列表 -->
     <ul class="list-group">
+{#        {{ comment_list }}#}
         {% for comment in comment_list %}
         <li class="list-group-item">
             <div class="nickname">
@@ -20,6 +26,7 @@
                 {% autoescape off %}
                 {{ comment.content }}
                 {% endautoescape %}
+
             </div>
         </li>
         {% endfor %}

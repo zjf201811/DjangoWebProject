@@ -7,17 +7,16 @@ from django.db.models import Q, F
 from comment.forms import CommentForm
 from comment.models import Comment
 
-import xadmin
-from xadmin import views
 
 # 创建xadmin的最基本管理器配置，并与view绑定
 # class BaseSetting(object):
-#     # 开启主题功能
+# 开启主题功能
 #     enable_themes = True
 #     use_bootswatch = True
 #
 # # 将基本配置管理与view绑定
 # xadmin.site.register(views.BaseAdminView,BaseSetting)
+
 
 class CommonViewMixin:
     def get_context_data(self, **kwargs):
@@ -44,7 +43,7 @@ class SearchView(IndexView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context.update({
-            'keyword': self.request.GET.get("keyword"," ")
+            'keyword': self.request.GET.get("keyword", " ")
         })
         return context
 

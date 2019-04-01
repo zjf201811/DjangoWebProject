@@ -1,4 +1,3 @@
-from django.shortcuts import redirect
 from .forms import CommentForm
 from django.views.generic import TemplateView
 
@@ -10,11 +9,14 @@ class CommentView(TemplateView):
     def post(self, request, *args, **kwargs):
         comment_form = CommentForm(request.POST)
         target = request.POST.get('target')
+        title = request.POST.get('title')
 
         if comment_form.is_valid():
             instance = comment_form.save(commit=False)
             instance.target = target
+            instance.title = title
             instance.save()
+
             succeed = True
             # return redirect(target)
         else:
@@ -24,5 +26,6 @@ class CommentView(TemplateView):
             'succeed': succeed,
             'form': comment_form,
             'target': target,
+            'title': title,
         }
         return self.render_to_response(context)

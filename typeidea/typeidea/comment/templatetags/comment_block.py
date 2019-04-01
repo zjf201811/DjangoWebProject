@@ -7,9 +7,10 @@ register = template.Library()
 
 
 @register.inclusion_tag('comment/block.html')
-def comment_block(target):
+def comment_block(target, title):
     return {
         'target': target,
+        'title': title,
         'comment_form': CommentForm(),
         'comment_list': Comment.get_by_target(target),
     }

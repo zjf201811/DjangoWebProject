@@ -1,5 +1,6 @@
-{% extends "./base.html" %}
+{% extends "blog/base.html" %}
 {% load comment_block %}
+{#{% load comment_ls %}#}
 {% block title %} {{ post.title }} {% endblock %}
 
 {% block extra_head %}
@@ -12,6 +13,7 @@
 {% block main %}
     {% if post %}
     <h1>{{ post.title }}</h1>
+
     <div>
         <span>分类:<a href="{% url 'category-list' post.category_id %}">{{ post.category.name }}</a></span>
         <span>作者:<a href="{% url 'author' post.owner_id %}">{{ post.owner.username }}</a></span>
@@ -25,5 +27,8 @@
         {% endautoescape %}
     </p>
     {% endif %}
-    {% comment_block request.path %}
+    {{ request.path }}
+    {{ post.title }}
+    {% comment_block request.path post.title %}
+
 {% endblock %}
