@@ -1,9 +1,9 @@
 from django.shortcuts import render,HttpResponse
 # from django.contrib.auth import authenticate,login
-from .forms import LoginForm, UserRegistrationForm
+from .forms import  UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
-from . forms import LoginForm, UserRegistrationForm, UserEditForm , ProfileEditForm
+from . forms import  UserRegistrationForm, UserEditForm , ProfileEditForm
 from django.contrib import messages
 
 

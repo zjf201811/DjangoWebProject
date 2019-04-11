@@ -30,13 +30,16 @@ class CommonViewMixin:
 
 class IndexView(CommonViewMixin, ListView):
 
-    paginate_by = 5
-    # context_object_name = "post_list"
+    paginate_by = 2
+    context_object_name = "post_list"
     template_name = "blog/list.html"
 
     def get_queryset(self):
         queryset = Post.latest_posts()
         return queryset
+
+
+
 
 
 class SearchView(IndexView):

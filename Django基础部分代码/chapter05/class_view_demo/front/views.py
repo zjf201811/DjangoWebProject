@@ -5,13 +5,15 @@ from django.views.generic import ListView,View
 from django.core.paginator import Paginator,Page
 from django.utils.decorators import method_decorator
 
+
 def add_article(request):
     articles = []
-    for x in range(0,102):
-        article = Article(title='标题：%s'%x,content='内容：%s'%x)
+    for x in range(0,101):
+        article = Article(title='标题：%s'%x,content='内容：%s'% x)
         articles.append(article)
     Article.objects.bulk_create(articles)
     return HttpResponse('article added successfully')
+
 
 class ArticleListView(ListView):
     model = Article
@@ -21,16 +23,24 @@ class ArticleListView(ListView):
     ordering = 'create_time'
     page_kwarg = 'p'
 
+# class SearchView(IndexView):
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data()
+#         context.update({
+#             'keyword': self.request.GET.get("keyword", " ")
+#         })
+#         return context
     def get_context_data(self, **kwargs):
         context = super(ArticleListView, self).get_context_data(*kwargs)
+        print(context)
         context['username'] = 'zhiliao'
         paginator = context.get('paginator')
         page_obj = context.get('page_obj')
-        pagination_data = self.get_pagination_data(paginator,page_obj,3)
+        pagination_data = self.get_pagination_data(paginator, page_obj,3)
         context.update(pagination_data)
         return context
 
-    def get_pagination_data(self,paginator,page_obj,around_count=2):
+    def get_pagination_data(self, paginator, page_obj, around_count=1):
         current_page = page_obj.number
         num_pages = paginator.num_pages
 
@@ -60,6 +70,7 @@ class ArticleListView(ListView):
 
     # def get_queryset(self):
     #     return Article.objects.filter(id__lte=9)
+
 
 def login_required(func):
     def wrapper(request,*args,**kwargs):

@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.utils.html import format_html
 from .models import Post, Category, Tag
 from .adminforms import PostAdminForm
-# from typeidea.custom_site import custom_site
 from typeidea.base_admin import BaseOwnerAdmin
 from django.contrib.admin.models import LogEntry
 from xadmin.layout import Row, Fieldset
@@ -34,7 +33,6 @@ class TagAdmin(BaseOwnerAdmin):
 
 
 class CategoryOwnerFilter(RelatedFieldListFilter):
-
     # title = '分类过滤器'
     # parameter_name = 'owner_category'
     #
@@ -98,7 +96,7 @@ class PostAdmin(BaseOwnerAdmin):
 
     form_layout = (
         Fieldset(
-            '基础信息',Row('title', 'category'),
+            '基础信息', Row('title', 'category'),
             'status',
             'tag',
         ),
@@ -108,7 +106,6 @@ class PostAdmin(BaseOwnerAdmin):
             'content',
         )
     )
-
 
     def operator(self, obj):
         return format_html(

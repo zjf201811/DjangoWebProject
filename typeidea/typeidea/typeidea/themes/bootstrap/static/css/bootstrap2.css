@@ -1,0 +1,14 @@
+html {
+  /*background-color: yellow;*/
+    background-position: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+  background-image:url(timg.jpg) ;
+  font-family: sans-serif;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -ms-overflow-style: scrollbar;
+  -webkit-tap-highlight-color: transparent;
+}

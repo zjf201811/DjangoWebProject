@@ -3,8 +3,7 @@
 
     <form  class="form-group" action="/comment/" method="POST">
         {% csrf_token %}
-{#        {{ target }}#}
-{#        {{ title }}#}
+
         <input name="target" type="hidden" value="{{ target }}"/>
         <input name="title" type="hidden" value="{{ title }}"/>
         {{ comment_form }}

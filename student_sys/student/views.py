@@ -4,7 +4,7 @@ from .models import Student
 from .forms import StudentForm
 from django.http.request import QueryDict
 from django.views import View
-
+from django.views.generic import TemplateView
 
 class IndexView(View):
     template_name = 'index.html'
@@ -17,6 +17,7 @@ class IndexView(View):
         return context
 
     def get(self, request):
+        print('调用了get请求')
         context = self.get_context()
         form = StudentForm()
         context.update({
@@ -25,15 +26,16 @@ class IndexView(View):
         return render(request, self.template_name, context=context)
 
     def post(self, request):
+        print("调用了post请求")
         form = StudentForm(request.POST)
         if form.is_valid():
-            print(form)
             form.save()
             return redirect(reverse('index'))
         context=self.get_context()
         context.update({
             'form': form
         })
+        print(request)
         return render(request, self.template_name, context=context)
 
 

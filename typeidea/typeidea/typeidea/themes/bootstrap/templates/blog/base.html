@@ -3,9 +3,11 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
+
     <meta charset="utf-8">
     <title>{% block title %}{% endblock %}- typeidea博客系统</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     {% block extra_head %}
     {% endblock %}
@@ -42,7 +44,7 @@
 	</div>
 	<div class="container main">
         <div class="row">
-            <div class="col-9 post-list">
+            <div class="col-9 post-list" style="background-color: white">
             {% block main %}
             {% endblock %}
             </div>

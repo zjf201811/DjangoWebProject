@@ -10,15 +10,16 @@
         {% for article in articles %}
             <li>{{ article.title }}</li>
         {% endfor %}
+
         <ul class="pagination">
-{#             上一页#}
+             上一页
             {% if page_obj.has_previous %}
                 <li><a href="{% url 'front:article_list' %}?p={{ page_obj.previous_page_number }}">上一页</a></li>
             {% else %}
                 <li class="disabled"><a href="javascript:void(0);">上一页</a></li>
             {% endif %}
 
-{#             中间的页码#}
+             中间的页码
             {% for page in paginator.page_range %}
                 {% if page == page_obj.number %}
                     <li class="active"><a href="javascript:void(0);">{{ page }}</a></li>
@@ -27,14 +28,14 @@
                 {% endif %}
             {% endfor %}
 
-{#             下一页#}
+             下一页
             {% if page_obj.has_next %}
                 <li><a href="{% url 'front:article_list' %}?p={{ page_obj.next_page_number }}">下一页</a></li>
             {% else %}
                 <li class="disabled"><a href="javascript:void(0);">下一页</a></li>
             {% endif %}
 
-        </ul>
+        </u
     </ul>
 </body>
 </html>

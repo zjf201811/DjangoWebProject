@@ -18,9 +18,9 @@ class UserRegistrationForm(forms.ModelForm):
         return cd['password2']
 
 
-class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+# class LoginForm(forms.Form):
+#     username = forms.CharField()
+#     password = forms.CharField()#widget=forms.PasswordInput
 
 
 class UserEditForm(forms.ModelForm):
