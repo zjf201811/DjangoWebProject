@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import mistune
 import markdown
+import zhihu
 
 
 class Category(models.Model):
