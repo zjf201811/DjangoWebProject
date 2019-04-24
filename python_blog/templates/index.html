@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}博客首页{% endblock %}
+{% block context %}
+    <ul>
+{#    {{ post_list }}#}
+    {% for post in post_list %}
+        <li class="result">
+        <a  href="{% url 'detail' post.id %}">
+            <div>
+            <b>{{ post.title }}</b>
+            </div>
+        </a>
+        <a href="{% url 'detail' post.id %}">
+            <div>
+                {{ post.owner }} <br>{{ post.created }}
+                {% autoescape off %}
+                {{ post.content_html|truncatechars:40}}
+                {% endautoescape %}
+            </div>
+        </a>
+        <br/>
+        </li>
+    {% endfor %}
+    </ul>
+
+{#{% if page_obj %}#}
+{#{% if page_obj.has_previous %}#}
+{#    <a href="?page={{ page_obj.previous_page_number }}">上一页</a>#}
+{#    {% endif %}#}
+{#    Page {{ page_obj.number }} of {{ paginator.num_pages }}#}
+{#{% if page_obj.has_next %}#}
+{#    <a href="?page={{ page_obj.next_page_number }}">下一页</a>#}
+{#    {% endif %}#}
+{#    {% endif %}#}
+
+            <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
+            {% else %}
+                <li class="disabled"><a href="javascript:void(0);">上一页</a></li>
+            {% endif %}
+
+            {% if left_has_more %}
+                <li><a href="?page=1">1</a></li>
+                <li><a href="javascript:void(0);">...</a></li>
+            {% endif %}
+
+            {% for left_page in left_pages %}
+                <li><a href="?page={{ left_page }}">{{ left_page }}</a></li>
+            {% endfor %}
+            <li class="active"><a href="?page={{ current_page }}">{{ current_page }}</a></li>
+
+            {% for right_page in right_pages %}
+                <li><a href="?page={{ right_page }}">{{ right_page }}</a></li>
+            {% endfor %}
+
+            {% if right_has_more %}
+                <li><a href="javascript:void(0);">...</a></li>
+                <li><a href="?page={{ num_pages }}">{{ num_pages }}</a></li>
+            {% endif %}
+
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
+            {% else %}
+                <li class="disabled"><a href="javascript:void(0);">下一页</a></li>
+            {% endif %}
+            </ul>
+{% endblock %}

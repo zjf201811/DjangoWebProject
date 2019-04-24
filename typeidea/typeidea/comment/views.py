@@ -8,12 +8,14 @@ class CommentView(TemplateView):
     template_name = 'comment/result.html'
 
     def post(self, request, *args, **kwargs):
+        print(request)
         comment_form = CommentForm(request.POST)
         target = request.POST.get('target')
         title = request.POST.get('title')
 
         if comment_form.is_valid():
-            instance = comment_form.save(commit=False)
+            instance = comment_form.save(commit=False)  #
+            print(instance)
             instance.target = target
             instance.title = title
             instance.save()

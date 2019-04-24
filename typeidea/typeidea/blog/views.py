@@ -2,11 +2,10 @@ from django.shortcuts import get_object_or_404
 from .models import Post, Tag, Category
 from django.contrib.auth.models import User
 from config.models import SiderBar
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView,TemplateView
 from django.db.models import Q, F
 from comment.forms import CommentForm
 from comment.models import Comment
-
 
 # 创建xadmin的最基本管理器配置，并与view绑定
 # class BaseSetting(object):
@@ -22,6 +21,7 @@ class CommonViewMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
+            'form': CommentForm,
             'sidebars': SiderBar.get_all(),
         })
         context.update(Category.get_navs())
@@ -30,7 +30,7 @@ class CommonViewMixin:
 
 class IndexView(CommonViewMixin, ListView):
 
-    paginate_by = 2
+    paginate_by = 4
     context_object_name = "post_list"
     template_name = "blog/list.html"
 
@@ -39,14 +39,11 @@ class IndexView(CommonViewMixin, ListView):
         return queryset
 
 
-
-
-
 class SearchView(IndexView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context.update({
-            'keyword': self.request.GET.get("keyword", " ")
+            'keyword': self.request.GET.get("keyword", "     ")
         })
         return context
 
@@ -100,7 +97,7 @@ class PostDetailView(CommonViewMixin, DetailView):
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
     #     context.update({
-    #         ' ': CommentForm,
+    #         'form': CommentForm,
     #         'comment_list': Comment.get_by_target(self.request.path),
     #     })
     #     return context

@@ -1,5 +1,4 @@
 from django import template
-
 from comment.forms import CommentForm
 from comment.models import Comment
 

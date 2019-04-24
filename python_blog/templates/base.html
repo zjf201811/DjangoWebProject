@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        *{
+        margin: 0;
+        padding: 0;
+        }
+
+        .nav li{
+        float:left;
+        list-style:none;
+        margin: 0 20px;
+        line-height: 65px;
+        }
+        hr{
+            color: #000000;
+        }
+        .nav li a{
+            color: black;
+            text-decoration:none;
+        }
+        .nav li a:hover{
+            color: red;
+        }
+{#        div{#}
+{##}
+{#            margin: 0;#}
+{#            padding: 10px;#}
+{##}
+{#        }#}
+        ul{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+        }
+        li{
+            margin: 0;
+        }
+        .result:hover{
+            background-color: gainsboro;
+        }
+        .context{
+            height: 1000px;
+            min-width: 600px;
+            max-width: 700px;
+            width: 40%;
+            margin: 25px 20px 0 20%;
+            float: left;
+        }
+        .context a:hover{
+            color: red;
+        }
+        .post{
+            margin: 20px 100px 100px 120px;
+            width: 40%;
+            min-width: 500px;
+            max-width: 900px;
+        }
+        .text_red :hover{
+            color: red;
+        }
+        .nav{
+{#        color: black;#}
+{#            background-color: #3842ff;#}
+{#        height: 50%;#}
+{#        width: 100%;#}
+{#        overflow: hidden;#}
+        font-size: large;
+        margin: 0;
+{#        float:left;#}
+        }
+
+        .right{
+            width: 20%;
+            height: 1000px;
+            float: left;
+{#            clear: both;#}
+            background-color: yellow;
+         }
+        .done{
+            height: 90px;
+            background-color: red;
+{#            float: left;#}
+            clear: both;
+        }
+        hr{
+{#            color: red;#}
+            width: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <ul>
+        <li id="nav"><a href="/">首页</a></li>
+        {% for category in categorys %}
+        <li id="nav"><a  href="{% url 'category' category.id %}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<hr />
+<div class="context">
+
+    {% block context %}
+    {% endblock %}
+</div>
+<div class="right">
+</div>
+<div class="done"></div>
+</body>
+</html>

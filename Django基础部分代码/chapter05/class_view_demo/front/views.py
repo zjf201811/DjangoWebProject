@@ -19,7 +19,7 @@ class ArticleListView(ListView):
     model = Article
     template_name = 'article_list1.html'
     context_object_name = 'articles'
-    paginate_by = 10
+    paginate_by = 1
     ordering = 'create_time'
     page_kwarg = 'p'
 
@@ -31,8 +31,8 @@ class ArticleListView(ListView):
 #         })
 #         return context
     def get_context_data(self, **kwargs):
-        context = super(ArticleListView, self).get_context_data(*kwargs)
-        print(context)
+        context = super(ArticleListView, self).get_context_data(**kwargs)
+        # print(context)
         context['username'] = 'zhiliao'
         paginator = context.get('paginator')
         page_obj = context.get('page_obj')

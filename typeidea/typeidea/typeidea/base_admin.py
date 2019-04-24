@@ -3,8 +3,7 @@ from django.contrib import admin
 
 
 class BaseOwnerAdmin:
-
-    exclude = ('owner',)
+    # exclude = ('owner',)
 
     def get_list_queryset(self):
         request = self.request

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}文章{% endblock %}
+
+{% block context %}
+    <div class="post">
+    <h2>{{ post.title }}</h2>
+    作者:{{ post.owner }}<br/>
+    创建时间:{{ post.created }}<br/>
+    阅读:{{ post.visits }}
+        <br/><br/>
+        {% autoescape off %}
+        {{ post.content_html }}
+        {% endautoescape %}
+        <br/>
+        <hr/>
+    {% for comment in comments %}
+        {% autoescape off %}
+        {{ comment.content }}
+        {% endautoescape %}
+
+        <br/>
+    {% endfor %}
+        <hr/>
+    <form  action="/comment/" method="post">
+            {% csrf_token %}
+{#        {{ request.path }}#}
+        <table>
+        {{ CommentForm }}
+        </table>
+        <input name="post" type="hidden" value="{{ post.id }}"/>
+        <input name="path" type="hidden" value="{{ request.path }}"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input id="submit" type="submit" value="写好了!" />
+    </form>
+    </div>
+{% endblock %}

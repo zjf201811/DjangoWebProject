@@ -38,9 +38,6 @@ class IndexView(View):
         print(request)
         return render(request, self.template_name, context=context)
 
-
-
-
 # def index(request):
 #     students = Student.get_all()
 #     if request.method == 'POST':

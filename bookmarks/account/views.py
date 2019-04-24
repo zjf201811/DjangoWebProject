@@ -1,9 +1,8 @@
 from django.shortcuts import render,HttpResponse
 # from django.contrib.auth import authenticate,login
-from .forms import  UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
-from . forms import  UserRegistrationForm, UserEditForm , ProfileEditForm
+from .forms import UserRegistrationForm, UserEditForm , ProfileEditForm
 from django.contrib import messages
 
 
@@ -21,10 +20,11 @@ def register(request):
     return render(request, 'account/register.html', {'user_form': user_form})
 
 
-
 @login_required
 def dashboard(request):
     return render(request, 'account/dashboard.html', {'section': 'dashboard'})
+print()
+
 
 @login_required
 def edit(request):

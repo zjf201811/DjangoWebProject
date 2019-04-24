@@ -57,7 +57,6 @@ class SiderBar(models.Model):
     def content_html(self):
         from blog.models import Post
         from comment.models import Comment
-
         result = ''
         if self.display_type == self.DISPLAY_HTML:
             result = self.content
@@ -66,21 +65,14 @@ class SiderBar(models.Model):
                 'posts': Post.latest_posts()
             }
             result = render_to_string('config/blocks/sidebar_posts.html',context)
-
         elif self.display_type == self.DISPLAY_HOT:
             context = {
                 'post': Post.hot_posts()
             }
             result = render_to_string("config/blocks/sidebar_posts.html", context)
-
         elif self.display_type == self.DISPLAY_COMMENT:
             context = {
                 'comments': Comment.objects.filter(status=Comment.STATUS_NORMAL)
             }
             result = render_to_string('config/blocks/sidebar_comments.html', context)
         return result
-
-
-
-
-
