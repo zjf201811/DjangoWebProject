@@ -37,3 +37,5 @@ class ZwwSpider(scrapy.Spider):
         # with open('元尊2.txt','a',encoding='utf-8') as f:
         #     f.write(title[0]+'\n\n')
         #     f.write(content+'\n\n\n')
+'https://www.zhihu.com/api/v4/members/feifeimao/followees?include=data%5B*%5D.answer_count%2Carticles_count%2Cgender%2Cfollower_count%2Cis_followed%2Cis_following%2Cbadge%5B%3F(type%3Dbest_answerer)%5D.topics&offset=20&limit=20'
+'https://www.zhihu.com/members/feifeimao/followees?include=data%5B%2A%5D.answer_count%2Carticles_count%2Cgender%2Cfollower_count%2Cis_followed%2Cis_following%2Cbadge%5B%3F%28type%3Dbest_answerer%29%5D.topics&limit=20&offset=20'

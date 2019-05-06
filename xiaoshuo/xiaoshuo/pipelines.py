@@ -8,7 +8,7 @@
 
 class XiaoshuoPipeline(object):
     def open_spider(self,spider):
-        self.file=open('猎命师传奇.txt','a',encoding='utf-8')
+        self.file=open('猎命师传奇全集.txt','w',encoding='utf-8')
     def process_item(self, item, spider):
         title = item['title']
         content = item['content']
